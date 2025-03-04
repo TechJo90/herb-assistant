@@ -1,0 +1,158 @@
+:root {
+    --dark-green: #2e5c36;
+    --medium-green: #4a7c59;
+    --light-green: #a2c086;
+    --very-light-green: #d8e4c3;
+    --beige: #e6ddc6;
+    --dark-beige: #d1bc8a;
+}
+
+body {
+    font-family: "Open Sans", sans-serif;
+    font-weight: 400;
+    background-color: var(--very-light-green);
+    color: var(--dark-green);
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1, h2, h3 {
+    font-family: "Spicy Rice", serif;
+    font-weight: 400;
+    font-style: normal;
+    color: var(--dark-green);
+}
+
+h1 {
+    font-size: 3em;
+    text-align: center;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px var(--beige);
+}
+
+.herb-card {
+    background-color: var(--beige);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border: 3px solid var(--dark-beige);
+    transition: transform 0.3s ease;
+}
+
+.herb-card:hover {
+    transform: translateY(-5px);
+}
+
+.herb-name {
+    color: var(--dark-green);
+    font-size: 1.8em;
+    margin-top: 0;
+    border-bottom: 2px solid var(--medium-green);
+    padding-bottom: 5px;
+}
+
+.herb-uses {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.ailment-tag {
+    display: inline-block;
+    background-color: var(--medium-green);
+    color: white;
+    padding: 5px 10px;
+    margin: 5px;
+    border-radius: 15px;
+    font-size: 0.9em;
+}
+
+.ailment-tag:hover {
+    background-color: var(--dark-green);
+}
+
+.generator-button {
+    display: block;
+    margin: 20px auto;
+    padding: 15px 30px;
+    background-color: var(--medium-green);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-family: "Spicy Rice", serif;
+    font-size: 1.5em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.generator-button:hover {
+    background-color: var(--dark-green);
+}
+
+.hidden {
+    display: none;
+}
+
+.loader {
+    text-align: center;
+    margin: 20px auto;
+}
+
+.spinner {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    border: 5px solid var(--light-green);
+    border-radius: 50%;
+    border-top-color: var(--dark-green);
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.herb-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.filter-button {
+    background-color: var(--beige);
+    border: 2px solid var(--medium-green);
+    color: var(--dark-green);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-family: "Open Sans", sans-serif;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.filter-button.active {
+    background-color: var(--medium-green);
+    color: white;
+}
+
+.herb-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.leaf {
+    position: absolute;
+    pointer-events: none;
+    z-index: 10;
+}
