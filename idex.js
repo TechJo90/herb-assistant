@@ -249,3 +249,53 @@ function applyLeafEffect() {
         });
     };
 })(jQuery);
+const API_KEY = '0a33330b825bat1fcbffb0a54480846o';
+const API_ENDPOINT = 'https://api.shecodes.io/ai/v1/generate';
+
+async function generateAIResponse(prompt, context = '') {
+    try {
+        const url = `${API_ENDPOINT}?prompt=${encodeURIComponent(prompt)}&key=${API_KEY}&context=${encodeURIComponent(context)}`;
+        
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data.answer || 'No response generated.';
+    } catch (error) {
+        console.error('Error generating AI response:', error);
+        return 'Sorry, there was an error processing your request.';
+    }
+}
+
+async function handleAIQuery() {
+    const promptInput = document.getElementById('prompt-input');
+    const responseDisplay = document.getElementById('response-display');
+
+    if (promptInput && responseDisplay) {
+        const prompt = promptInput.value;
+        const context = 'Provide a clear and precise answer';
+
+        try {
+            responseDisplay.textContent = 'Generating response...';
+            const aiResponse = await generateAIResponse(prompt, context);
+            responseDisplay.textContent = aiResponse;
+        } catch (error) {
+            responseDisplay.textContent = 'An error occurred while generating the response.';
+        }
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const submitButton = document.getElementById('submit-button');
+    if (submitButton) {
+        submitButton.addEventListener('click', handleAIQuery);
+    }
+});
