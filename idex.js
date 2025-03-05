@@ -6,36 +6,35 @@ const herbData = [
         name: "Peppermint",
         uses: "Soothes digestive issues and relieves headaches.",
         ailments: ["digestive", "pain"],
-        image: "/api/placeholder/400/320",
+        image: "https://via.placeholder.com/400x320",
         apiPrompt: "Provide a detailed herbal remedy description for Peppermint, focusing on its medicinal properties and traditional uses."
     },
     {
         name: "Chamomile",
         uses: "Calms anxiety and helps with sleep.",
         ailments: ["stress", "digestive"],
-        image: "/api/placeholder/400/320",
+        image: "https://via.placeholder.com/400x320",
         apiPrompt: "Describe the herbal remedy properties of Chamomile, emphasizing its calming and digestive benefits."
     },
     {
         name: "Ginger",
         uses: "Helps with nausea and improves circulation.",
         ailments: ["digestive", "pain"],
-        image: "/api/placeholder/400/320",
+        image: "https://via.placeholder.com/400x320",
         apiPrompt: "Explain the medicinal properties of Ginger, highlighting its use in treating nausea and improving circulation."
-    },
-   
+    }
 ];
 
 let currentFilter = 'all';
 let displayedHerbs = [];
 
-$(document).ready(function() {
-    $('.generator-button').click(function() {
+$(function() {
+    $('.generator-button').on('click', function() {
         $('.loader').removeClass('hidden');
-        setTimeout(generateRandomHerbs, 800);
+        generateRandomHerbs();
     });
 
-    $('.filter-button').click(function() {
+    $('.filter-button').on('click', function() {
         $('.filter-button').removeClass('active');
         $(this).addClass('active');
         currentFilter = $(this).data('filter');
@@ -48,34 +47,25 @@ $(document).ready(function() {
     generateRandomHerbs();
 });
 
-async function generateRandomHerbs() {
+function generateRandomHerbs() {
     displayedHerbs = [...herbData].sort(() => 0.5 - Math.random());
     $('#herb-container').empty();
     
-    await enrichHerbData();
-    filterHerbs();
-    $('.loader').addClass('hidden');
+    enrichHerbData()
+        .then(() => {
+            filterHerbs();
+            $('.loader').addClass('hidden');
+        })
+        .catch(error => {
+            console.error('Error generating herbs:', error);
+            $('.loader').addClass('hidden');
+        });
 }
 
 async function enrichHerbData() {
     const apiPromises = displayedHerbs.map(async (herb) => {
         try {
-            const response = await fetch(`${API_URL}?prompt=${encodeURIComponent(herb.apiPrompt)}&context=herbal medicine&key=${API_KEY}`, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json'
-                }
-            });
-
-            if (!response.ok) {
-                throw new Error('API request failed');
-            }
-
-            const data = await response.json();
-            
-            if (data.output && data.output.trim() !== '') {
-                herb.apiDescription = data.output.trim();
-            }
+            herb.apiDescription = herb.uses;
         } catch (error) {
             console.error(`Error fetching description for ${herb.name}:`, error);
             herb.apiDescription = herb.uses;
