@@ -29,15 +29,15 @@
     }
 }
 
-.herb-card {
-    transition: all 0.3s ease;
-    animation: herb-reveal 0.5s ease-out;
-    will-change: transform, opacity;
-}
-
-.herb-card:hover {
-    transform: scale(1.02);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+body {
+    font-family: "Open Sans", sans-serif;
+    font-weight: 400;
+    background-color: var(--very-light-green);
+    color: var(--dark-green);
+    margin: 0;
+    padding: 0;
+    position: relative;
+    overflow-x: hidden;
 }
 
 .falling-leaf {
@@ -53,40 +53,160 @@
     animation: leaf-fall linear infinite;
 }
 
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 10;
+}
+
+h1, h2, h3 {
+    font-family: "Spicy Rice", serif;
+    font-weight: 400;
+    font-style: normal;
+    color: var(--dark-green);
+}
+
+h1 {
+    font-size: 3em;
+    text-align: center;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px var(--beige);
+}
+
+.disclaimer {
+    background-color: var(--beige);
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 0.9em;
+}
+
+.disclaimer .supported-ailments {
+    font-weight: bold;
+    color: var(--dark-green);
+}
+
+#herb-question {
+    display: flex;
+    max-width: 600px;
+    margin: 20px auto;
+    gap: 10px;
+}
+
+#herb-question input {
+    flex-grow: 1;
+    padding: 12px 15px;
+    border: 2px solid var(--medium-green);
+    border-radius: 25px;
+    font-size: 1em;
+    background-color: white;
+    transition: all 0.3s ease;
+}
+
+#herb-question input:focus {
+    outline: none;
+    border-color: var(--dark-green);
+    box-shadow: 0 0 10px rgba(46, 92, 54, 0.2);
+}
+
+#herb-question button {
+    padding: 12px 25px;
+    background-color: var(--medium-green);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-family: "Spicy Rice", serif;
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#herb-question button:hover {
+    background-color: var(--dark-green);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.herb-filters {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
 .filter-button {
+    padding: 10px 15px;
+    background-color: var(--light-green);
+    color: var(--dark-green);
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
 }
 
 .filter-button:hover {
+    background-color: var(--medium-green);
+    color: white;
     transform: scale(1.05);
 }
 
-.filter-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
-    transition: all 0.6s;
-}
-
-.filter-button:hover::before {
-    left: 100%;
-}
-
-#herb-question button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+.filter-button.active {
+    background-color: var(--dark-green);
+    color: white;
 }
 
 .generator-button {
+    display: block;
+    margin: 20px auto;
+    padding: 12px 25px;
+    background-color: var(--medium-green);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-family: "Spicy Rice", serif;
+    cursor: pointer;
     transition: all 0.3s ease;
 }
 
 .generator-button:hover {
+    background-color: var(--dark-green);
     transform: rotate(5deg);
 }
+
+#herb-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.herb-card {
+    background-color: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    animation: herb-reveal 0.5s ease-out;
+    will-change: transform, opacity;
+}
+
+.herb-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+.herb-card img {
+    max-width: 100%;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.herbal-fact {
+    background-color: var(--beige);
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 20px;
