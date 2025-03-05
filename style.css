@@ -36,6 +36,44 @@ h1 {
     text-shadow: 2px 2px var(--beige);
 }
 
+#herb-search {
+    display: flex;
+    max-width: 600px;
+    margin: 20px auto;
+    gap: 10px;
+}
+
+#herb-search input {
+    flex-grow: 1;
+    padding: 12px 15px;
+    border: 2px solid var(--medium-green);
+    border-radius: 25px;
+    font-size: 1em;
+    background-color: white;
+    transition: border-color 0.3s ease;
+}
+
+#herb-search input:focus {
+    outline: none;
+    border-color: var(--dark-green);
+}
+
+#herb-search button {
+    padding: 12px 25px;
+    background-color: var(--medium-green);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-family: "Spicy Rice", serif;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#herb-search button:hover {
+    background-color: var(--dark-green);
+}
+
 .herb-card {
     background-color: var(--beige);
     border-radius: 10px;
@@ -155,4 +193,16 @@ h1 {
     position: absolute;
     pointer-events: none;
     z-index: 10;
+}
+
+@media (max-width: 600px) {
+    #herb-search {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    #herb-search input,
+    #herb-search button {
+        width: 100%;
+    }
 }
