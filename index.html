@@ -13,10 +13,14 @@
     <div class="container">
         <h1>Herbal Remedy Finder</h1>
         
+        <form id="herb-search">
+            <input type="text" id="ailment-input" placeholder="What ailment do you need help with?" required>
+            <button type="submit">Find Herb Remedy</button>
+        </form>
+        
         <div class="herb-filters">
             <button class="filter-button active" data-filter="all">All Remedies</button>
             <button class="filter-button" data-filter="digestive">Digestive</button>
-            <button class="filter-button" data-filter="respiratory">Respiratory</button>
             <button class="filter-button" data-filter="skin">Skin</button>
             <button class="filter-button" data-filter="stress">Stress</button>
             <button class="filter-button" data-filter="pain">Pain</button>
@@ -30,7 +34,6 @@
         
         <div id="herb-container"></div>
     </div>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="index.js"></script>
 </body>
