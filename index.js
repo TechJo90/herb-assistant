@@ -55,6 +55,34 @@ const herbalFacts = [
 let currentFilter = 'all';
 let displayedHerbs = [];
 
+function createFallingLeaves() {
+    const leafCount = 15;
+    const container = document.body;
+
+    for (let i = 0; i < leafCount; i++) {
+        const leaf = document.createElement('div');
+        leaf.classList.add('falling-leaf');
+
+        const startX = Math.random() * window.innerWidth;
+        const delay = Math.random() * 5;
+        const duration = 5 + Math.random() * 10;
+        const leafSize = 20 + Math.random() * 30;
+
+        leaf.style.left = `${startX}px`;
+        leaf.style.width = `${leafSize}px`;
+        leaf.style.height = `${leafSize}px`;
+        leaf.style.animationDuration = `${duration}s`;
+        leaf.style.animationDelay = `-${delay}s`;
+
+        container.appendChild(leaf);
+
+        leaf.addEventListener('animationiteration', () => {
+            const newX = Math.random() * window.innerWidth;
+            leaf.style.left = `${newX}px`;
+        });
+    }
+}
+
 $(function() {
     $('#herb-question').on('submit', function(e) {
         e.preventDefault();
@@ -75,6 +103,13 @@ $(function() {
     $('.generator-button').on('click', function() {
         $('.loader').removeClass('hidden');
         generateRandomHerbs();
+    });
+
+    createFallingLeaves();
+
+    $(window).on('resize', function() {
+        $('.falling-leaf').remove();
+        createFallingLeaves();
     });
 
     generateRandomHerbs();
