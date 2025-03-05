@@ -25,13 +25,27 @@ const herbData = [
     }
 ];
 
+const herbalFacts = [
+    "Herbalism is one of the oldest forms of medicine, dating back thousands of years.",
+    "Many modern pharmaceutical drugs were originally derived from plant compounds.",
+    "Ancient Egyptians used herbal medicines as early as 3000 BCE.",
+    "The World Health Organization estimates that 80% of the world's population still relies on traditional herbal medicine.",
+    "Hippocrates, the father of modern medicine, documented over 400 herbal treatments.",
+    "Some herbs like Echinacea have been used by Native American tribes for centuries to boost immunity.",
+    "Herbal medicine is not just about treating illness, but also about maintaining overall wellness.",
+    "The study of medicinal plants is called ethnobotany.",
+    "Many culinary herbs also have significant medicinal properties.",
+    "Traditional Chinese Medicine has used herbal remedies for over 2,000 years."
+];
+
 let currentFilter = 'all';
 let displayedHerbs = [];
 
 $(function() {
-    $('.generator-button').on('click', function() {
-        $('.loader').removeClass('hidden');
-        generateRandomHerbs();
+    $('#herb-question').on('submit', function(e) {
+        e.preventDefault();
+        const questionTerm = $('#herb-input').val().toLowerCase();
+        searchHerbRemedies(questionTerm);
     });
 
     $('.filter-button').on('click', function() {
@@ -44,43 +58,63 @@ $(function() {
         }
     });
 
-    $('#herb-search').on('submit', function(e) {
-        e.preventDefault();
-        const searchTerm = $('#ailment-input').val().toLowerCase();
-        searchHerbRemedies(searchTerm);
+    $('.generator-button').on('click', function() {
+        $('.loader').removeClass('hidden');
+        generateRandomHerbs();
     });
 
     generateRandomHerbs();
 });
 
-function searchHerbRemedies(ailment) {
+function searchHerbRemedies(question) {
     $('.loader').removeClass('hidden');
     $('#herb-container').empty();
+    $('#herbal-fact').addClass('hidden');
 
-    const matchedHerbs = herbData.filter(herb => 
-        herb.ailments.includes(ailment)
-    );
+    const searchTerms = ['digestive', 'stress', 'pain', 'skin'];
+    const matchedTerm = searchTerms.find(term => question.includes(term));
 
-    if (matchedHerbs.length > 0) {
-        displayedHerbs = matchedHerbs;
-        enrichHerbData()
-            .then(() => {
-                filterHerbs();
-                $('.loader').addClass('hidden');
-            })
-            .catch(error => {
-                console.error('Error generating herbs:', error);
-                $('.loader').addClass('hidden');
-            });
+    if (matchedTerm) {
+        const matchedHerbs = herbData.filter(herb => 
+            herb.ailments.includes(matchedTerm)
+        );
+
+        if (matchedHerbs.length > 0) {
+            displayedHerbs = matchedHerbs;
+            enrichHerbData()
+                .then(() => {
+                    filterHerbs();
+                    displayHerbalFact();
+                    $('.loader').addClass('hidden');
+                })
+                .catch(error => {
+                    console.error('Error generating herbs:', error);
+                    $('.loader').addClass('hidden');
+                });
+        } else {
+            $('#herb-container').html(`
+                <div class="herb-card">
+                    <h2>No herbs found for "${matchedTerm}"</h2>
+                    <p>We don't have a specific herb for this ailment. Try asking about: digestive, stress, pain, or skin issues.</p>
+                </div>
+            `);
+            $('.loader').addClass('hidden');
+        }
     } else {
         $('#herb-container').html(`
             <div class="herb-card">
-                <h2>No herbs found for "${ailment}"</h2>
-                <p>We don't have a specific herb for this ailment. Try searching for: digestive, stress, pain, or skin.</p>
+                <h2>Oops!</h2>
+                <p>We can currently help with herbs for: digestive, stress, pain, or skin issues. Please rephrase your question.</p>
             </div>
         `);
         $('.loader').addClass('hidden');
     }
+}
+
+function displayHerbalFact() {
+    const randomFact = herbalFacts[Math.floor(Math.random() * herbalFacts.length)];
+    $('#fact-text').text(randomFact);
+    $('#herbal-fact').removeClass('hidden');
 }
 
 function generateRandomHerbs() {
@@ -90,6 +124,7 @@ function generateRandomHerbs() {
     enrichHerbData()
         .then(() => {
             filterHerbs();
+            displayHerbalFact();
             $('.loader').addClass('hidden');
         })
         .catch(error => {
@@ -104,102 +139,4 @@ async function enrichHerbData() {
             herb.apiDescription = herb.uses;
         } catch (error) {
             console.error(`Error fetching description for ${herb.name}:`, error);
-            herb.apiDescription = herb.uses;
-        }
-    });
-
-    await Promise.all(apiPromises);
-}
-
-function filterHerbs() {
-    $('#herb-container').empty();
-    
-    let filteredHerbs = displayedHerbs;
-    if (currentFilter !== 'all') {
-        filteredHerbs = displayedHerbs.filter(herb => 
-            herb.ailments.includes(currentFilter)
-        );
-    }
-    
-    filteredHerbs.forEach(herb => {
-        const herbCard = $('<div>').addClass('herb-card');
-        const herbName = $('<h2>').addClass('herb-name').text(herb.name);
-        const herbUses = $('<p>').addClass('herb-uses').text(herb.apiDescription || herb.uses);
-        const herbImg = $('<img>').attr('src', herb.image).attr('alt', herb.name);
-        
-        const ailmentContainer = $('<div>').addClass('ailment-container');
-        herb.ailments.forEach(ailment => {
-            const ailmentTag = $('<span>').addClass('ailment-tag').text(ailment);
-            ailmentContainer.append(ailmentTag);
-        });
-        
-        herbCard.append(herbImg, herbName, herbUses, ailmentContainer);
-        $('#herb-container').append(herbCard);
-    });
-    
-    $('.herb-card').each(function(index) {
-        $(this).css('animation-delay', (index * 0.1) + 's');
-    });
-    
-    applyLeafEffect();
-}
-
-function applyLeafEffect() {
-    setTimeout(function() {
-        $('.herb-card').leafEffect({
-            color: '#a2c086',
-            size: 15,
-            count: 10
-        });
-    }, 500);
-}
-
-(function($) {
-    $.fn.leafEffect = function(options) {
-        const settings = $.extend({
-            color: '#4a7c59',
-            size: 20,
-            count: 15
-        }, options);
-        
-        return this.each(function() {
-            const $element = $(this);
-            
-            $element.on('mouseenter', function() {
-                createLeaves($element);
-            });
-            
-            function createLeaves($target) {
-                const targetWidth = $target.width();
-                const targetHeight = $target.height();
-                
-                for (let i = 0; i < settings.count; i++) {
-                    const leaf = $('<div>').addClass('leaf');
-                    const size = Math.random() * settings.size + 5;
-                    
-                    leaf.css({
-                        position: 'absolute',
-                        width: size + 'px',
-                        height: size + 'px',
-                        background: settings.color,
-                        borderRadius: '50% 0 50% 50%',
-                        transform: 'rotate(' + (Math.random() * 360) + 'deg)',
-                        opacity: 0.7,
-                        top: Math.random() * targetHeight,
-                        left: Math.random() * targetWidth
-                    });
-                    
-                    $target.append(leaf);
-                    
-                    leaf.animate({
-                        top: targetHeight,
-                        left: '+=' + (Math.random() * 100 - 50),
-                        opacity: 0
-                    }, 1500 + Math.random() * 1000, function() {
-                        $(this).remove();
-                    });
-                }
-            }
-        });
-    };
-})(jQuery);
+            her
