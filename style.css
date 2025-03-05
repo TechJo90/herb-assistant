@@ -7,111 +7,86 @@
     --dark-beige: #d1bc8a;
 }
 
-body {
-    font-family: "Open Sans", sans-serif;
-    font-weight: 400;
-    background-color: var(--very-light-green);
-    color: var(--dark-green);
-    margin: 0;
-    padding: 0;
+@keyframes leaf-fall {
+    0% {
+        transform: translateY(-100vh) rotate(0deg);
+        opacity: 0.7;
+    }
+    100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
 }
 
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
+@keyframes herb-reveal {
+    0% {
+        opacity: 0;
+        transform: scale(0.8) translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
 }
 
-h1, h2, h3 {
-    font-family: "Spicy Rice", serif;
-    font-weight: 400;
-    font-style: normal;
-    color: var(--dark-green);
+.herb-card {
+    transition: all 0.3s ease;
+    animation: herb-reveal 0.5s ease-out;
+    will-change: transform, opacity;
 }
 
-h1 {
-    font-size: 3em;
-    text-align: center;
-    margin-bottom: 20px;
-    text-shadow: 2px 2px var(--beige);
+.herb-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 }
 
-.disclaimer {
-    background-color: var(--beige);
-    border-radius: 10px;
-    padding: 15px;
-    margin-bottom: 20px;
-    text-align: center;
-    font-size: 0.9em;
+.falling-leaf {
+    position: fixed;
+    pointer-events: none;
+    z-index: -1;
+    width: 30px;
+    height: 30px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23a2c086"><path d="M17 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm-6 8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7 4c0 1.1.9 2 2 2s2-.9 2-2-.9-2-2-2-2 .9-2 2z"/><path d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>');
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.6;
+    animation: leaf-fall linear infinite;
 }
 
-.disclaimer .supported-ailments {
-    font-weight: bold;
-    color: var(--dark-green);
+.filter-button {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
 
-#herb-question {
-    display: flex;
-    max-width: 600px;
-    margin: 20px auto;
-    gap: 10px;
+.filter-button:hover {
+    transform: scale(1.05);
 }
 
-#herb-question input {
-    flex-grow: 1;
-    padding: 12px 15px;
-    border: 2px solid var(--medium-green);
-    border-radius: 25px;
-    font-size: 1em;
-    background-color: white;
-    transition: border-color 0.3s ease;
+.filter-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: all 0.6s;
 }
 
-#herb-question input:focus {
-    outline: none;
-    border-color: var(--dark-green);
-}
-
-#herb-question button {
-    padding: 12px 25px;
-    background-color: var(--medium-green);
-    color: white;
-    border: none;
-    border-radius: 25px;
-    font-family: "Spicy Rice", serif;
-    font-size: 1em;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+.filter-button:hover::before {
+    left: 100%;
 }
 
 #herb-question button:hover {
-    background-color: var(--dark-green);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-.herbal-fact {
-    background-color: var(--beige);
-    border-radius: 10px;
-    padding: 15px;
-    margin-top: 20px;
-    text-align: center;
-    font-style: italic;
+.generator-button {
+    transition: all 0.3s ease;
 }
 
-.herbal-fact h3 {
-    margin-top: 0;
-    color: var(--medium-green);
-}
-
-/* Rest of the CSS remains the same as in the previous version */
-
-@media (max-width: 600px) {
-    #herb-question {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    #herb-question input,
-    #herb-question button {
-        width: 100%;
-    }
+.generator-button:hover {
+    transform: rotate(5deg);
 }
