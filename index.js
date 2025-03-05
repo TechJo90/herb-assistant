@@ -1,4 +1,4 @@
-const API_KEY = '0a33330b825bat1fcbffb0a54480846o';
+const API_KEY = 'YOUR_ACTUAL_API_KEY_HERE';
 const API_URL = 'https://api.shecodes.io/ai/v1/generate';
 
 const herbData = [
@@ -44,8 +44,44 @@ $(function() {
         }
     });
 
+    $('#herb-search').on('submit', function(e) {
+        e.preventDefault();
+        const searchTerm = $('#ailment-input').val().toLowerCase();
+        searchHerbRemedies(searchTerm);
+    });
+
     generateRandomHerbs();
 });
+
+function searchHerbRemedies(ailment) {
+    $('.loader').removeClass('hidden');
+    $('#herb-container').empty();
+
+    const matchedHerbs = herbData.filter(herb => 
+        herb.ailments.includes(ailment)
+    );
+
+    if (matchedHerbs.length > 0) {
+        displayedHerbs = matchedHerbs;
+        enrichHerbData()
+            .then(() => {
+                filterHerbs();
+                $('.loader').addClass('hidden');
+            })
+            .catch(error => {
+                console.error('Error generating herbs:', error);
+                $('.loader').addClass('hidden');
+            });
+    } else {
+        $('#herb-container').html(`
+            <div class="herb-card">
+                <h2>No herbs found for "${ailment}"</h2>
+                <p>We don't have a specific herb for this ailment. Try searching for: digestive, stress, pain, or skin.</p>
+            </div>
+        `);
+        $('.loader').addClass('hidden');
+    }
+}
 
 function generateRandomHerbs() {
     displayedHerbs = [...herbData].sort(() => 0.5 - Math.random());
