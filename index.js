@@ -1,4 +1,4 @@
-const API_KEY = 'YOUR_ACTUAL_API_KEY_HERE';
+const API_KEY = '0a33330b825bat1fcbffb0a54480846o';
 const API_URL = 'https://api.shecodes.io/ai/v1/generate';
 
 const herbData = [
