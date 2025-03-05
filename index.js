@@ -22,6 +22,20 @@ const herbData = [
         ailments: ["digestive", "pain"],
         image: "https://via.placeholder.com/400x320",
         apiPrompt: "Explain the medicinal properties of Ginger, highlighting its use in treating nausea and improving circulation."
+    },
+    {
+        name: "Lavender",
+        uses: "Helps with skin irritation and promotes relaxation.",
+        ailments: ["skin", "stress"],
+        image: "https://via.placeholder.com/400x320",
+        apiPrompt: "Describe the skin and stress-relief properties of Lavender, focusing on its topical and aromatherapy uses."
+    },
+    {
+        name: "Aloe Vera",
+        uses: "Soothes skin irritations and supports healing.",
+        ailments: ["skin"],
+        image: "https://via.placeholder.com/400x320",
+        apiPrompt: "Provide a comprehensive overview of Aloe Vera's skin healing and protective properties."
     }
 ];
 
@@ -65,6 +79,30 @@ $(function() {
 
     generateRandomHerbs();
 });
+
+function filterHerbs() {
+    let filteredHerbs = displayedHerbs;
+    
+    if (currentFilter !== 'all') {
+        filteredHerbs = displayedHerbs.filter(herb => 
+            herb.ailments.includes(currentFilter)
+        );
+    }
+    
+    $('#herb-container').empty();
+    filteredHerbs.forEach(herb => {
+        const herbCard = `
+            <div class="herb-card">
+                <h2>${herb.name}</h2>
+                <img src="${herb.image}" alt="${herb.name}">
+                <p><strong>Uses:</strong> ${herb.uses}</p>
+                <p><strong>Helps with:</strong> ${herb.ailments.join(', ')}</p>
+                <p>${herb.apiDescription || herb.uses}</p>
+            </div>
+        `;
+        $('#herb-container').append(herbCard);
+    });
+}
 
 function searchHerbRemedies(question) {
     $('.loader').removeClass('hidden');
@@ -134,9 +172,8 @@ function generateRandomHerbs() {
 }
 
 async function enrichHerbData() {
-    const apiPromises = displayedHerbs.map(async (herb) => {
-        try {
-            herb.apiDescription = herb.uses;
-        } catch (error) {
-            console.error(`Error fetching description for ${herb.name}:`, error);
-            her
+    displayedHerbs.forEach(herb => {
+        herb.apiDescription = herb.uses;
+    });
+    return Promise.resolve();
+}
