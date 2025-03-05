@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Herbal Remedy Generator</title>
+    <title>Herbal Remedy Finder</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Spicy+Rice&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
@@ -13,10 +13,16 @@
     <div class="container">
         <h1>Herbal Remedy Finder</h1>
         
-        <form id="herb-search">
-            <input type="text" id="ailment-input" placeholder="What ailment do you need help with?" required>
-            <button type="submit">Find Herb Remedy</button>
+        <form id="herb-question">
+            <input type="text" id="herb-input" placeholder="What herb would be good for...?" required>
+            <button type="submit">Ask About Herbs</button>
         </form>
+        
+        <div class="disclaimer">
+            <p><strong>Disclaimer:</strong> Our herb finder currently supports searching for remedies related to: 
+            <span class="supported-ailments">digestive issues, stress, pain, and skin concerns</span>. 
+            This is not medical advice. Always consult a healthcare professional.</p>
+        </div>
         
         <div class="herb-filters">
             <button class="filter-button active" data-filter="all">All Remedies</button>
@@ -26,13 +32,18 @@
             <button class="filter-button" data-filter="pain">Pain</button>
         </div>
         
-        <button class="generator-button">Find a Remedy</button>
+        <button class="generator-button">Find a Random Remedy</button>
         
         <div class="loader hidden">
             <div class="spinner"></div>
         </div>
         
         <div id="herb-container"></div>
+        
+        <div id="herbal-fact" class="herbal-fact hidden">
+            <h3>Herbal Wisdom</h3>
+            <p id="fact-text"></p>
+        </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="index.js"></script>
